@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.example.dogs.R
 import kotlinx.android.synthetic.main.fragment_list.*
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +33,18 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         buttonDetails.setOnClickListener {
-            findNavController().navigate(R.id.actionDetailFragment)
+
+            //to send args to another Fragment put in bundle then add bundle to navigate below
+//            var bundle: Bundle? = null
+//            bundle?.putInt("dogUuid", 5)
+
+            //to navigate to another fragment using R
+//            findNavController().navigate(R.id.actionDetailFragment, bundle)
+
+            //nav to another fragment using action
+            val action = ListFragmentDirections.actionDetailFragment()
+            action.dogUuid = 5
+            Navigation.findNavController(it).navigate(action)
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.dogs.R
 import kotlinx.android.synthetic.main.fragment_detail.*
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 class DetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
+    private var dogUuid = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,8 +33,12 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //to get args passed to this fragment via bundle or otherwise?
+//        var id = arguments?.getInt("dogUuid")
+
         buttonList.setOnClickListener {
-            findNavController().navigate(R.id.actionListFragment)
+            val action = DetailFragmentDirections.actionListFragment()
+            Navigation.findNavController(it).navigate(action)
         }
     }
 
