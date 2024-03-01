@@ -39,13 +39,13 @@ class DetailFragment : Fragment() {
         //or you can also do it like this
         arguments?.let {
             dogUuid = DetailFragmentArgs.fromBundle(it).dogUuid
-            textView2.text = dogUuid.toString()
+//            textView2.text = dogUuid.toString()
         }
 
-        buttonList.setOnClickListener {
-            val action = DetailFragmentDirections.actionListFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
+//        buttonList.setOnClickListener {
+//            val action = DetailFragmentDirections.actionListFragment()
+//            Navigation.findNavController(it).navigate(action)
+//        }
     }
 
     companion object {

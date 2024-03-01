@@ -29,10 +29,10 @@ class ListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
 
-        buttonDetails.setOnClickListener {
+//        buttonDetails.setOnClickListener {
 
             //to send args to another Fragment put in bundle then add bundle to navigate below
 //            var bundle: Bundle? = null
@@ -42,11 +42,11 @@ class ListFragment : Fragment() {
 //            findNavController().navigate(R.id.actionDetailFragment, bundle)
 
             //nav to another fragment using action
-            val action = ListFragmentDirections.actionDetailFragment()
-            action.dogUuid = 5
-            Navigation.findNavController(it).navigate(action)
-        }
-    }
+//            val action = ListFragmentDirections.actionDetailFragment()
+//            action.dogUuid = 5
+//            Navigation.findNavController(it).navigate(action)
+//        }
+//    }
 
     companion object {
 
