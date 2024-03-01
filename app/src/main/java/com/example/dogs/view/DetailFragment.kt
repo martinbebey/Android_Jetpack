@@ -36,6 +36,12 @@ class DetailFragment : Fragment() {
         //to get args passed to this fragment via bundle or otherwise?
 //        var id = arguments?.getInt("dogUuid")
 
+        //or you can also do it like this
+        arguments?.let {
+            dogUuid = DetailFragmentArgs.fromBundle(it).dogUuid
+            textView2.text = dogUuid.toString()
+        }
+
         buttonList.setOnClickListener {
             val action = DetailFragmentDirections.actionListFragment()
             Navigation.findNavController(it).navigate(action)
