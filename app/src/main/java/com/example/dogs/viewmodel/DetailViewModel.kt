@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.example.dogs.model.DogBreed
 
 class DetailViewModel: ViewModel() {
-    val dog = MutableLiveData<DogBreed>()
+    val dogLiveData = MutableLiveData<DogBreed>()
 
-    fun refresh(){
-        val dog1 = DogBreed("1", "Corgi", "9 years", "breedGroup", "bredFor", "temperament", "")
-        dog.value = dog1
+    fun fetch(){
+        val dog = DogBreed("1", "Corgi", "9 years", "breedGroup", "bredFor", "temperament", "")
+        dogLiveData.value = dog
     }
 }

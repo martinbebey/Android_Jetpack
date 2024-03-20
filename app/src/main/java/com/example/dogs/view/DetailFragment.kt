@@ -7,12 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dogs.R
 import com.example.dogs.viewmodel.DetailViewModel
-import com.example.dogs.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -27,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class DetailFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel
-
     private var dogUuid = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,21 +50,20 @@ class DetailFragment : Fragment() {
         }
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
-        viewModel.refresh()
+        viewModel.fetch()
 
         observeViewModel()
 
     }
 
-    fun observeViewModel(){
-        viewModel.dog.observe(viewLifecycleOwner, Observer {
+    private fun observeViewModel(){
+        viewModel.dogLiveData.observe(viewLifecycleOwner, Observer {
             it?.let{
                 dogName.text = it.dogBreed
                 dogPurpose.text = it.bredFor
                 dogTemperament.text = it.temperament
                 dogLifespan.text = it.lifespan
             }
-
         })
     }
     companion object {
