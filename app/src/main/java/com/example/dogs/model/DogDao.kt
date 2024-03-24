@@ -8,14 +8,14 @@ import androidx.room.Query
 interface DogDao {
     @Insert
     //suspend means run this on a different thread
-    suspend fun  insertAll(vararg dogs: DogBreed): List<Long>
+    suspend  fun  insertAll(vararg dogs: DogBreed): List<Long>
 
     @Query("SELECT * FROM dogbreed") //in db everything is in lower case
-    suspend fun  getAllDogs(): List<DogBreed>
+    suspend  fun  getAllDogs(): List<DogBreed>
 
     @Query("SELECT * FROM dogbreed WHERE uuid = :dogId")
-    suspend fun getDog(dogId: Int): DogBreed
+    suspend  fun getDog(dogId: Int): DogBreed
 
     @Query("DELETE FROM dogbreed")
-    suspend fun deleteAllDogs()
+    suspend  fun deleteAllDogs()
 }

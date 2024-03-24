@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 //a singleton means that there will only be one instance of this class no matter how many threads try to access it
-@Database(entities = arrayOf(DogBreed::class), version = 1)
+@Database(entities = [DogBreed::class], version = 1)//[] = same as arrayof()
 abstract class DogDatabase: RoomDatabase() {
     abstract fun dogDao(): DogDao
 
