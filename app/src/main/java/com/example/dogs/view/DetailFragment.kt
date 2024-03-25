@@ -5,14 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.dogs.R
+import com.example.dogs.databinding.FragmentDetailBinding
+import com.example.dogs.databinding.ItemDogBinding
 import com.example.dogs.util.getProgessDrawable
 import com.example.dogs.util.loadImage
 import com.example.dogs.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,13 +29,15 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class DetailFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel
+    private lateinit var dataBinding: FragmentDetailBinding
     private var dogUuid = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,11 +67,12 @@ class DetailFragment : Fragment() {
     private fun observeViewModel(){
         viewModel.dogLiveData.observe(viewLifecycleOwner, Observer {dog ->
             dog?.let{
-                dogName.text = dog.dogBreed
-                dogPurpose.text = dog.bredFor
-                dogTemperament.text = dog.temperament
-                dogLifespan.text = dog.lifespan
-                context?. let{dogImage.loadImage(dog.imageUrl, getProgessDrawable(it))}
+                dataBinding.dog = dog
+//                dogName.text = dog.dogBreed
+//                dogPurpose.text = dog.bredFor
+//                dogTemperament.text = dog.temperament
+//                dogLifespan.text = dog.lifespan
+//                context?. let{dogImage.loadImage(dog.imageUrl, getProgessDrawable(it))}
             }
         })
     }
