@@ -19,7 +19,8 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     private var prefHelper = SharedPreferencesHelper(getApplication())
 
     //time to live or cache time
-    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L //1k milli, 1k micro, 1k nano seconds = 5 mins
+    private val ONE_SECOND = 1000 * 1000 * 1000L
+    private var refreshTime = 5 * 60 * ONE_SECOND //1k milli, 1k micro, 1k nano seconds = 5 mins
     private val dogsService = DogsApiService()
     private val disposable = CompositeDisposable() //to observe observable given by api
 
@@ -28,6 +29,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     val loading = MutableLiveData<Boolean>()
 
     fun refresh(){
+        checkCacheDuration()
         val updateTime = prefHelper.getUpdateTime()
 
         if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime){
@@ -36,6 +38,18 @@ class ListViewModel(application: Application): BaseViewModel(application) {
 
         else{
             fetchFromRemote()
+        }
+    }
+
+    private fun checkCacheDuration(){
+        val cachePreference = prefHelper.getCacheDuration()
+
+        try{
+            val cachePreferenceInt = cachePreference?.toInt() ?: (5 * 60)
+            refreshTime = cachePreferenceInt.times(ONE_SECOND)
+        }
+        catch (e: java.lang.NumberFormatException){
+            e.printStackTrace()
         }
     }
 
