@@ -3,10 +3,8 @@ package com.example.dogs.view
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -43,6 +41,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         return dataBinding.root
     }
@@ -71,9 +70,9 @@ class DetailFragment : Fragment() {
 
     }
 
-    private fun observeViewModel(){
-        viewModel.dogLiveData.observe(viewLifecycleOwner, Observer {dog ->
-            dog?.let{
+    private fun observeViewModel() {
+        viewModel.dogLiveData.observe(viewLifecycleOwner, Observer { dog ->
+            dog?.let {
 //                dogName.text = dog.dogBreed
 //                dogPurpose.text = dog.bredFor
 //                dogTemperament.text = dog.temperament
@@ -81,21 +80,21 @@ class DetailFragment : Fragment() {
 //                context?. let{dogImage.loadImage(dog.imageUrl, getProgessDrawable(it))}
                 dataBinding.dog = dog
 
-                dog.imageUrl?.let{
+                dog.imageUrl?.let {
                     setupBackgroundColor(it)
                 }
             }
         })
     }
 
-    private fun setupBackgroundColor(url: String){
+    private fun setupBackgroundColor(url: String) {
         Glide.with(this)
             .asBitmap()
             .load(url)
-            .into(object: CustomTarget<Bitmap>() {
+            .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     Palette.from(resource)
-                        .generate {palette ->
+                        .generate { palette ->
                             val intColor = palette?.lightMutedSwatch?.rgb ?: 0
                             val myPalette = DogPalette(intColor)
                             dataBinding.palette = myPalette
@@ -107,6 +106,23 @@ class DetailFragment : Fragment() {
 
             })
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(
+            R.menu.detail_menu,
+            menu
+        ) //our inflated menu layout attached to this menu variable
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_send_sms -> {}
+            R.id.action_share -> {}
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     companion object {
 
     }
