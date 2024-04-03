@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -15,7 +16,10 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.dogs.R
 import com.example.dogs.databinding.FragmentDetailBinding
 import com.example.dogs.databinding.ItemDogBinding
+import com.example.dogs.databinding.SendSmsDialogBinding
+import com.example.dogs.model.DogBreed
 import com.example.dogs.model.DogPalette
+import com.example.dogs.model.SmsInfo
 import com.example.dogs.util.getProgessDrawable
 import com.example.dogs.util.loadImage
 import com.example.dogs.viewmodel.DetailViewModel
@@ -37,6 +41,7 @@ class DetailFragment : Fragment() {
     private lateinit var dataBinding: FragmentDetailBinding
     private var dogUuid = 0
     private var sendSmsStarted = false
+    private var currentDog: DogBreed? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +78,7 @@ class DetailFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.dogLiveData.observe(viewLifecycleOwner, Observer { dog ->
+            currentDog = dog
             dog?.let {
 //                dogName.text = dog.dogBreed
 //                dogPurpose.text = dog.bredFor
@@ -130,6 +136,31 @@ class DetailFragment : Fragment() {
     }
 
     fun  onPermissionResult(permissionGranted: Boolean){
+        if(sendSmsStarted && permissionGranted){
+            context?.let{
+                val smsInfo = SmsInfo("", "${currentDog?.dogBreed} bred for ${currentDog?.bredFor}", currentDog?.imageUrl)
+                val dialogBinding = DataBindingUtil.inflate<SendSmsDialogBinding>(LayoutInflater.from(it), R.layout.send_sms_dialog, null, false)
+
+                AlertDialog.Builder(it)
+                    .setView(dialogBinding.root)
+                    .setPositiveButton("Send SMS"){ dialog, which ->
+                        if(!dialogBinding.smsDestination.text.isNullOrEmpty()){
+                            smsInfo.to = dialogBinding.smsDestination.text.toString()
+                            sendSms(smsInfo)
+                        }
+                    }
+                    .setNegativeButton("Cancel"){dialog, which ->
+
+                    }
+                    .show()
+
+                //to attach the smsInfo var from the sms dialog layout to this sms info
+                dialogBinding.smsInfo = smsInfo
+            }
+        }
+    }
+
+    private fun sendSms(smsInfo: SmsInfo){
 
     }
 
