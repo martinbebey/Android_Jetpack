@@ -133,7 +133,14 @@ class DetailFragment : Fragment() {
 
             }
 
-            R.id.action_share -> {}
+            R.id.action_share -> {
+                val intent = Intent(Intent.ACTION_SEND)//ACTION_SEND is generic flag for when an app wants to send some info to other apps
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_SUBJECT, "check out this dog breed")
+                intent.putExtra(Intent.EXTRA_TEXT, "${currentDog?.dogBreed} bred for ${currentDog?.bredFor}")
+                intent.putExtra(Intent.EXTRA_STREAM, currentDog?.imageUrl)
+                startActivity(Intent.createChooser(intent, "Share with"))//chooser lets the user choose which app should handle the sharing
+            }
         }
         return super.onOptionsItemSelected(item)
     }
