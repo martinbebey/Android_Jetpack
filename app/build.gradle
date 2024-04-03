@@ -20,6 +20,7 @@ android {
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -86,6 +87,9 @@ dependencies {
     implementation "com.android.support:palette-v7:$supportVersion"
 
     implementation "androidx.preference:preference:$preferencesVersion"
+
+    implementation "com.google.firebase:firebase-core:21.1.1"//large library to go over android method count limit to fix with multidex library
+    implementation "com.android.support:multidex:1.0.3"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
